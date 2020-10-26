@@ -1,0 +1,17 @@
+com\nuvu\api\people\entities\User.class
+com\nuvu\api\people\service\UserDetailsServiceImp.class
+com\nuvu\api\people\security\JwtProvider.class
+com\nuvu\api\people\dto\JwtDTO.class
+com\nuvu\api\people\controller\PeopleController.class
+com\nuvu\api\people\repositories\RolRepository.class
+com\nuvu\api\people\service\PeopleService.class
+com\nuvu\api\people\service\UserService.class
+com\nuvu\api\people\repositories\UserRepository.class
+com\nuvu\api\people\PeopleApplication.class
+com\nuvu\api\people\repositories\PeopleRepository.class
+com\nuvu\api\people\security\SecurityConfig.class
+com\nuvu\api\people\security\JwtEntryPoint.class
+com\nuvu\api\people\security\JwtTokenFilter.class
+com\nuvu\api\people\enums\ERoles.class
+com\nuvu\api\people\entities\People.class
+com\nuvu\api\people\entities\Rol.class
