@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.nuvu.api.people.entities.User;
+import com.nuvu.api.people.entities.UserDet;
 
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
@@ -17,7 +18,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userService.getUserByUsername(username);
-		return User.build(user);
+		return UserDet.build(user);
 	}
 
 }

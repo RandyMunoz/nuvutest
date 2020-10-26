@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -24,7 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "usuarios")
-public class User implements Serializable, UserDetails {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 308122459227137252L;
 
@@ -46,24 +45,14 @@ public class User implements Serializable, UserDetails {
 	@NotNull
 	private List<Rol> roles;
 
-	private Collection<? extends GrantedAuthority> authorities;
-
-	public User(@NotNull String username, @NotNull String password, @NotNull List<Rol> roles,
-			Collection<? extends GrantedAuthority> authorities) {
+	public User(@NotNull String username, @NotNull String password, @NotNull List<Rol> roles) {
 		this.username = username;
 		this.password = password;
 		this.roles = roles;
-		this.authorities = authorities;
 	}
 
 	public User() {
 
-	}
-
-	public static User build(User user) {
-		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(rol -> new SimpleGrantedAuthority(rol.getRolNombre().toString())).collect(Collectors.toList());
-		return new User(user.getUsername(), user.getPassword(), user.getRoles(), authorities);
 	}
 
 	public Long getId() {
@@ -96,35 +85,6 @@ public class User implements Serializable, UserDetails {
 
 	public void setRoles(List<Rol> roles) {
 		this.roles = roles;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
 	}
 
 }
