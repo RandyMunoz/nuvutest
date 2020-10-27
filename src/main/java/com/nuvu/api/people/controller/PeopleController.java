@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,6 +54,7 @@ public class PeopleController {
 	@Autowired
 	private JwtProvider jwtProvider;
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value = "/save")
 	public ResponseEntity<?> save(@RequestBody People people) {
 		try {
@@ -93,6 +95,7 @@ public class PeopleController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value = "/updatePeople")
 	public ResponseEntity<?> updatePeople(@RequestBody People people) {
 		try {
@@ -110,6 +113,7 @@ public class PeopleController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(value = "/delete")
 	public ResponseEntity<?> delete(@RequestParam(required = true) Long id) {
 		try {
