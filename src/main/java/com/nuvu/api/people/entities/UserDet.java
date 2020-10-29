@@ -1,8 +1,8 @@
 package com.nuvu.api.people.entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,8 +22,8 @@ public class UserDet implements UserDetails {
 	}
 
 	public static UserDet build(User user) {
-		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(rol -> new SimpleGrantedAuthority(rol.getRolNombre().toString())).collect(Collectors.toList());
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority(user.getRol().getRolNombre().toString()));
 		return new UserDet(user.getUsername(), user.getPassword(), authorities);
 	}
 

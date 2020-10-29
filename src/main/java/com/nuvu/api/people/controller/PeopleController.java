@@ -1,6 +1,5 @@
 package com.nuvu.api.people.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -131,39 +130,33 @@ public class PeopleController {
 			@RequestParam(required = true) String password) {
 		try {
 			if (username != null && password != null) {
-				User user = userService.getUserByUsernameAndPassword(username, password);
-				if (user != null) {
-					Authentication authentication = authenticationManager.authenticate(
-							new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-					SecurityContextHolder.getContext().setAuthentication(authentication);
-					String token = jwtProvider.generateToken(authentication);
-					UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-					JwtDTO jwtDTO = new JwtDTO(token, "Bearer", user.getUsername(), userDetails.getAuthorities());
-					return new ResponseEntity<JwtDTO>(jwtDTO, HttpStatus.OK);
-				} else {
-					return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
-				}
+				Authentication authentication = authenticationManager
+						.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+				String token = jwtProvider.generateToken(authentication);
+				UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+				JwtDTO jwtDTO = new JwtDTO(token, "Bearer", username, userDetails.getAuthorities());
+				return new ResponseEntity<JwtDTO>(jwtDTO, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>("Usuario o contraseña vacios", HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			_logger.error("Error in method authentication", e);
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Usuario o contraseña incorrectos", HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping(value = "/registerUser")
 	public ResponseEntity<?> registerUser(@RequestBody User user) {
 		try {
-			if (user.getUsername() != null && user.getPassword() != null && user.getRoles() != null
-					&& user.getRoles().size() > 0) {
+			if (user.getUsername() != null && user.getPassword() != null && user.getRol() != null) {
 				User u = userService.getUserByUsername(user.getUsername());
-				if (u != null) {
+				if (u == null) {
 					User newUser = new User();
 					newUser.setUsername(user.getUsername());
 					newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-					newUser.setRoles(user.getRoles());
+					newUser.setRol(user.getRol());
 					userService.save(newUser);
 
 					return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.OK);

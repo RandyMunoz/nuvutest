@@ -1,25 +1,16 @@
 package com.nuvu.api.people.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "usuarios")
@@ -36,19 +27,21 @@ public class User implements Serializable {
 	@NotNull
 	private String username;
 
-	@Column(name = "username")
+	@Column(name = "password")
 	@NotNull
 	private String password;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
+	@ManyToOne
+	// @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name =
+	// "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
+	@JoinColumn(name = "rol_id", referencedColumnName = "id")
 	@NotNull
-	private List<Rol> roles;
+	private Rol rol;
 
-	public User(@NotNull String username, @NotNull String password, @NotNull List<Rol> roles) {
+	public User(@NotNull String username, @NotNull String password, @NotNull Rol rol) {
 		this.username = username;
 		this.password = password;
-		this.roles = roles;
+		this.rol = rol;
 	}
 
 	public User() {
@@ -79,12 +72,12 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public List<Rol> getRoles() {
-		return roles;
+	public Rol getRol() {
+		return rol;
 	}
 
-	public void setRoles(List<Rol> roles) {
-		this.roles = roles;
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 
 }

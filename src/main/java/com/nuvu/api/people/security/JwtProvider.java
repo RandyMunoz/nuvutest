@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.nuvu.api.people.entities.User;
+import com.nuvu.api.people.entities.UserDet;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -29,7 +29,7 @@ public class JwtProvider {
 	private int expiration;
 
 	public String generateToken(Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
+		UserDet user = (UserDet) authentication.getPrincipal();
 		return Jwts.builder().setSubject(user.getUsername()).setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
